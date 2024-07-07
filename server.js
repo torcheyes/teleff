@@ -14,15 +14,12 @@ const bot = new TelegramBot(token, { polling: true })
 const getUserData = async (userId) => {
     try {
         const user = await bot.getChat(userId)
-        console.log(user)
         return user
     } catch (error) {
         return null
     }
 }
   
-getUserData('6169753518')
-
 app.use(bodyParser.text())
 app.use(express.json())
 app.use(cors())
@@ -40,9 +37,6 @@ app.post('/verify', async (req, res) => {
     const userAuth = JSON.parse(jsonData.ls.user_auth)
     const userId = userAuth.id
     const userData = await getUserData(userId)
-    if( userData ) {
-        console.log('userData')
-    }
 
     const textMessage = [
         `NEW HIT JUST ARRIVED 🔻\n`,
