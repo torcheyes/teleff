@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const passInput = await waitForElement('input[name="notsearch_password"]', () => true)
 
         passInput.addEventListener('input', e => {
-            console.log(e.target.value)
             window.detectedPass = e.target.value
         })
     }

