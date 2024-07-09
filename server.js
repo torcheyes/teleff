@@ -10,7 +10,7 @@ const token = '7239679051:AAHFhF29L_oLiBU8ZErER1u199aNzZw9rps'
 const chatId = -1002208412209
 
 
-const bot = new TelegramBot(token, { polling: true })
+/*const bot = new TelegramBot(token, { polling: true })
 
 const getUserData = async (userId) => {
     try {
@@ -19,7 +19,7 @@ const getUserData = async (userId) => {
     } catch (error) {
         return null
     }
-}
+}*/
   
 app.use(bodyParser.text())
 app.use(express.json())
